@@ -1,0 +1,107 @@
+"use client";
+
+import React, { useCallback, useRef } from "react";
+import { useController, FieldValues } from "react-hook-form";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+interface FileUploadFieldProps<T extends FieldValues = any> {
+  control: any;
+  name: string;
+  label: string;
+  acceptTypes: string[];
+  disabled?: boolean;
+  icon: React.ComponentType<any>;
+  placeholder: string;
+  hint: string;
+}
+
+const FileUploader = <T extends FieldValues>({
+  control,
+  name,
+  label,
+  acceptTypes,
+  disabled,
+  icon: Icon,
+  placeholder,
+  hint,
+}: FileUploadFieldProps<T>) => {
+  const {
+    field: { onChange, value },
+  } = useController({ name, control });
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        onChange(file);
+      }
+    },
+    [onChange],
+  );
+
+  const onRemove = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onChange(null);
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+    },
+    [onChange],
+  );
+
+  const isUploaded = !!value;
+
+  return (
+    <div className="w-full">
+      <label className="form-label">{label}</label>
+      <div
+        className={cn(
+          "upload-dropzone border-2 border-dashed border-[#8B7355]/20",
+          isUploaded && "upload-dropzone-uploaded",
+        )}
+        onClick={() => !disabled && inputRef.current?.click()}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) =>
+          e.key === "Enter" && !disabled && inputRef.current?.click()
+        }
+      >
+        <input
+          type="file"
+          accept={acceptTypes.join(",")}
+          className="hidden"
+          ref={inputRef}
+          onChange={handleFileChange}
+          disabled={disabled}
+        />
+
+        {isUploaded ? (
+          <div className="flex flex-col items-center relative w-full px-4">
+            <p className="upload-dropzone-text line-clamp-1">
+              {(value as File).name}
+            </p>
+            <button
+              type="button"
+              onClick={onRemove}
+              className="upload-dropzone-remove mt-2"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        ) : (
+          <>
+            <Icon className="upload-dropzone-icon" />
+            <p className="upload-dropzone-text">{placeholder}</p>
+            <p className="upload-dropzone-hint">{hint}</p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default FileUploader;
