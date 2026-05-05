@@ -56,7 +56,7 @@ const HeroSection = () => {
                   1
                 </div>
                 <div className=" flex flex-col">
-                  <h3 className="libraray-step-title text-lg font-bold">
+                  <h3 className="library-step-title text-lg font-bold">
                     Upload PDF
                   </h3>
                   <p className="library-step-description text-gray-500">
@@ -71,7 +71,7 @@ const HeroSection = () => {
                   2
                 </div>
                 <div className=" flex flex-col">
-                  <h3 className="libraray-step-title text-lg font-bold">
+                  <h3 className="library-step-title text-lg font-bold">
                     AI Processing
                   </h3>
                   <p className="library-step-description text-gray-500">
@@ -86,7 +86,7 @@ const HeroSection = () => {
                   3
                 </div>
                 <div className=" flex flex-col">
-                  <h3 className="libraray-step-title text-lg font-bold">
+                  <h3 className="library-step-title text-lg font-bold">
                     Voice Chat
                   </h3>
                   <p className="library-step-description text-gray-500">
